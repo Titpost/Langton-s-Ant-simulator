@@ -38,8 +38,6 @@ object PanelSample extends SimpleSwingApplication {
     title = "Langton’s Ant simulator"
     minimumSize = new Dimension( 1200, 1200 )
     contents = gridBagPanel
-
-    //gridBagPanel
   }
 
   private val gridBagPanel = new GridBagPanel() {
