@@ -11,10 +11,6 @@ object AntField extends SimpleSwingApplication {
 
   private val dim = 1000
   private val field = Array.ofDim[Int](dim, dim)
-  private val coords = for {
-    x <- 0 until dim
-    y <- 0 until dim
-  } yield (x, y)
 
 
   def top: MainFrame = new MainFrame {
@@ -25,17 +21,18 @@ object AntField extends SimpleSwingApplication {
 
 
   private lazy val ui = new Panel {
-    preferredSize = new Dimension(200, 200)
-
     override def paintComponent(g: Graphics2D): Unit = {
       super.paintComponent(g)
-      coords.foreach( t => {
-        g.setColor(if (0 == field(t._1)(t._2))
+      for {
+        x <- 0 until dim
+        y <- 0 until dim }
+      {
+        g.setColor(if (0 == field(x)(y))
           Color.white
         else
           Color.black)
-        g.drawRect(t._1, t._2, 1, 1)
-      })
+        g.drawRect(x, y, 1, 1)
+      }
     }
   }
 
@@ -47,7 +44,7 @@ object AntField extends SimpleSwingApplication {
 
     def go(config: String, update: (Int, Int) => Unit): Unit = {
       new Thread(() => {
-        while (true) {
+        while (x < dim && y < dim && x >= 0 && y >= 0) {
 
           if (0 == field(x)(y)) {
             // At a white square, turn 90° right,
@@ -64,26 +61,14 @@ object AntField extends SimpleSwingApplication {
 
           // move forward one unit
           dir match {
-            case 0 => if (dim == y+1) return else y += 1
-            case 1 => if (dim == x+1) return else x += 1
-            case 2 => if (0 == y) return else y -= 1
-            case 3 => if (0 == x) return else x -= 1
-            case _ => x = 100000
+            case 0 => y += 1
+            case 1 => x += 1
+            case 2 => y -= 1
+            case 3 => x -= 1
           }
-
-          println(s"dir = $dir: x = $x, y = $y");
         }
       }).start()
     }
-
-/*    private def invertColor(x: Int, y: Int, update: (Int, Int) => Unit) : Unit = {
-      if (field(x)(y)) {
-        field(x)(y) = false
-      } else {
-        field(x)(y) = true
-      }
-      update.apply(x, y)
-    }*/
   }
 
 
