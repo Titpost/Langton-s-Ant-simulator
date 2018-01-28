@@ -10,8 +10,13 @@ import scala.swing.{Dimension, MainFrame, Panel, Rectangle, SimpleSwingApplicati
 object AntField extends SimpleSwingApplication {
 
   private val dim = 1000
-  private val field = Array.ofDim[Int](dim, dim)
-
+  private val field = Array.ofDim[State](dim, dim)
+  def at(x: Int, y: Int): State = {
+    if (null == field(x)(y)) {
+      field(x)(y) = new State()
+    }
+    field(x)(y)
+  }
 
   def top: MainFrame = new MainFrame {
     minimumSize = new Dimension( dim, dim )
@@ -27,10 +32,10 @@ object AntField extends SimpleSwingApplication {
         x <- 0 until dim
         y <- 0 until dim }
       {
-        g.setColor(if (0 == field(x)(y))
-          Color.white
+        g.setColor(if (at(x, y).colored)
+          Color.black
         else
-          Color.black)
+          Color.white)
         g.drawRect(x, y, 1, 1)
       }
     }
@@ -46,17 +51,19 @@ object AntField extends SimpleSwingApplication {
       new Thread(() => {
         while (x < dim && y < dim && x >= 0 && y >= 0) {
 
-          if (0 == field(x)(y)) {
+          at(x, y).step = (at(x, y).step + 1) % config.length
+
+          if (config.charAt(at(x, y).step) != 'R') {
+            // flip the color of the square,
+            at(x, y).colored = true
             // At a white square, turn 90° right,
             dir = (dir + 1) % 4
-            // flip the color of the square,
-            field(x)(y) = 1
           }
           else {
+            // flip the color of the square,
+            at(x, y).colored = false
             // At a black square, turn 90° left,
             dir = (dir + 3) % 4
-            // flip the color of the square,
-            field(x)(y) = 0
           }
 
           // move forward one unit
@@ -73,6 +80,6 @@ object AntField extends SimpleSwingApplication {
 
 
   // move your ant
-  ant.go("LLRRRLRLRLLR", (x, y) => {
+  ant.go("RL", (x, y) => {
     ui.repaint(new Rectangle(x, y, 1, 1))})
 }
