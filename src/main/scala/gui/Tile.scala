@@ -1,13 +1,16 @@
 package gui
 
-import java.awt.Color
+import java.awt.{Color, Rectangle}
 
-import scala.swing.{Button, Component}
+import scala.swing.{Dimension, Panel}
 
 /**
  * @author Tit on 27.01.2018
  */
-class Tile extends Button {
+class Tile extends Panel {
+
+  preferredSize = new Dimension(1, 1)
+
 
   def invertColor() : Unit = {
     if (Color.BLACK == background) {

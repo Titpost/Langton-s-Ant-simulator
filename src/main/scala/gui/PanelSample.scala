@@ -9,7 +9,7 @@ import scala.swing.{Dimension, GridBagPanel, MainFrame, SimpleSwingApplication}
  */
 object PanelSample extends SimpleSwingApplication {
 
-  private val dim = 20
+  private val dim = 220
   private val field = Array.ofDim[Tile](dim, dim)
 
   private object ant {
@@ -36,7 +36,7 @@ object PanelSample extends SimpleSwingApplication {
   def top: MainFrame = new MainFrame {
 
     title = "Langton’s Ant simulator"
-    minimumSize = new Dimension( 1200, 1200 )
+    minimumSize = new Dimension( 500, 500 )
     contents = gridBagPanel
   }
 
