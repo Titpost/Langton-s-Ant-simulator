@@ -24,7 +24,6 @@ object AntField extends SimpleSwingApplication {
     contents = ui
   }
 
-
   private lazy val ui = new Panel {
     override def paintComponent(g: Graphics2D): Unit = {
       super.paintComponent(g)
@@ -78,8 +77,13 @@ object AntField extends SimpleSwingApplication {
     }
   }
 
-
   // move your ant
+  // RL
+  // RLR
+  // RRLL
+  // LRRRRRLLR
+  // LLRRRLRLRLLR
+  // RRLLLRLLLRRR
   ant.go("RL", (x, y) => {
     ui.repaint(new Rectangle(x, y, 1, 1))})
 }
